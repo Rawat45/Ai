@@ -38,3 +38,36 @@ print(f"Number of Heads: {heads}")
 print(f"Number of Tails: {tails}")
 print(f"Estimated Probability of Heads: {probability_of_heads_simulated:.4f}")
 print(f"Estimated Probability of Tails: {probability_of_tails_simulated:.4f}")
+
+
+
+
+
+from collections import deque
+
+def bfs_shortest_path(adj, src, dest):
+    q = deque([[src]])
+    visited = {src}
+    while q:
+        path = q.popleft()
+        node = path[-1]
+        if node == dest:
+            return path
+        for nei in adj[node]:
+            if nei not in visited:
+                visited.add(nei)
+                q.append(path + [nei])
+    return []
+
+# Example
+adj = {
+    0: [1, 2],
+    1: [0, 3],
+    2: [0, 4],
+    3: [1, 5],
+    4: [2, 5],
+    5: [3, 4]
+}
+
+print(bfs_shortest_path(adj, 0, 5))
+
