@@ -1,3 +1,53 @@
+import random
+
+# Bayes calculation
+def bayes_alarm(P_fault, P_alarm_given_fault, P_alarm_given_no_fault):
+    P_no_fault = 1 - P_fault
+
+    numerator = P_alarm_given_fault * P_fault
+    denominator = numerator + P_alarm_given_no_fault * P_no_fault
+
+    return numerator / denominator
+
+
+# SIMULATION for 10,000 cases
+def simulate_alarm_cases(n=10000, P_fault=0.01, P_alarm_given_fault=0.95, P_alarm_given_no_fault=0.02):
+    alarm_count = 0
+    true_fault_with_alarm = 0
+
+    for _ in range(n):
+        # randomly check if a device actually has a fault
+        has_fault = random.random() < P_fault
+
+        # based on fault, trigger alarm with respective probability
+        if has_fault:
+            alarm = random.random() < P_alarm_given_fault
+        else:
+            alarm = random.random() < P_alarm_given_no_fault
+
+        # Count alarms
+        if alarm:
+            alarm_count += 1
+            if has_fault:
+                true_fault_with_alarm += 1
+
+    experimental_prob = true_fault_with_alarm / alarm_count if alarm_count else 0
+    return experimental_prob
+
+
+# GIVEN PROBABILITIES
+P_fault = 0.01
+P_alarm_given_fault = 0.95
+P_alarm_given_no_fault = 0.02
+
+# BAYES RESULT
+bayes_result = bayes_alarm(P_fault, P_alarm_given_fault, P_alarm_given_no_fault)
+print("Bayes Probability (Fault | Alarm):", bayes_result)
+
+# SIMULATION RESULT
+simulated_prob = simulate_alarm_cases()
+print("Simulated Probability (Fault | Alarm) for 10,000 cases:", simulated_prob)
+
 BFS Traversal
 from collections import deque
 
